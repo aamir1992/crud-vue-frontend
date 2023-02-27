@@ -14,7 +14,16 @@ export default {
     const router = useRouter()
     const route = useRoute()
 
-    const API_URL = 'http://localhost:5000/posts'
+    const API_URL = 'https://crud-vue-backend.vercel.app/posts'
+
+    const headers = { 
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Max-Age": "1800",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    };
 
     const post = ref({
       title: '',
@@ -28,7 +37,7 @@ export default {
 
     async function getPost() {
       const { id } = route.params
-      const response = await fetch(`${API_URL}/${id}`)
+      const response = await fetch(`${API_URL}/${id}`, headers)
       const json = await response.json()
       post.value = json
     }
@@ -38,9 +47,7 @@ export default {
         const { id } = route.params
         const response = await fetch(`${API_URL}/${id}`, {
           method: 'PUT',
-          headers: {
-            'content-type': 'application/json',
-          },
+          headers,
           body: JSON.stringify({
             title: post.value.title,
             content: post.value.content,

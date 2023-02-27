@@ -11,8 +11,17 @@ export default {
     PostForm,
   },
   setup() {
-    const API_URL = 'http://localhost:5000/posts'
+    const API_URL = 'https://crud-vue-backend.vercel.app/posts'
     const router = useRouter()
+
+    const headers = { 
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Max-Age": "1800",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    };
 
     const post = reactive({
       title: '',
@@ -24,9 +33,7 @@ export default {
       try {
         const response = await fetch(API_URL, {
           method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
+          headers,
           body: JSON.stringify({
             title: post.title,
             content: post.content,

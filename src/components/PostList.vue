@@ -43,7 +43,16 @@ export default {
     const router = useRouter()
     const posts = ref([])
 
-    const API_URL = 'http://localhost:5000/posts'
+    const API_URL = 'https://crud-vue-backend.vercel.app/posts'
+
+    const headers = { 
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Max-Age": "1800",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    };
 
     onMounted(() => {
       getPosts()
@@ -51,7 +60,7 @@ export default {
 
     async function getPosts() {
       try {
-        const response = await fetch(API_URL)
+        const response = await fetch(API_URL, headers)
         const json = await response.json()
         posts.value = json
       } catch (error) {
@@ -62,6 +71,7 @@ export default {
     async function removePost(_id) {
       const response = await fetch(`${API_URL}/${_id}`, {
         method: 'DELETE',
+        headers,
       })
       getPosts()
     }
